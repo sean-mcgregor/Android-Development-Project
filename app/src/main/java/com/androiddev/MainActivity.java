@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Walk Tracking Application");
 
         FloatingActionButton startWalk = findViewById(R.id.startWalk);
         FloatingActionButton endWalk = findViewById(R.id.endWalk);
