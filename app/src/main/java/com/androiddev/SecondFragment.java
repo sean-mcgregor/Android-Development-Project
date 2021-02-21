@@ -9,7 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.jjoe64.graphview.*;
+
 public class SecondFragment extends Fragment {
+
+    GraphView graph;
 
     @Override
     public View onCreateView(
@@ -30,5 +34,8 @@ public class SecondFragment extends Fragment {
                         .navigate(R.id.action_SecondFragment_to_FirstFragment);
             }
         });
+
+        graph = view.findViewById(R.id.graph);
     }
+
 }

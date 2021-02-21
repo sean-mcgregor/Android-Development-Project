@@ -12,7 +12,6 @@ import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.location.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,14 +22,26 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton startWalk = findViewById(R.id.startWalk);
+        FloatingActionButton endWalk = findViewById(R.id.endWalk);
+
+        startWalk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Walk started!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
-                
+
+            }
+        });
+
+        endWalk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Walk finished!", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+
             }
         });
     }
