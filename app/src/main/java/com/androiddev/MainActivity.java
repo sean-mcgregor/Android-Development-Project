@@ -160,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
     };
+    int counter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,8 +186,19 @@ public class MainActivity extends AppCompatActivity {
 
                 walkStarted = true;
 
-                getLocation();
-                System.out.println(walkData.size());
+                while (counter < 20) {
+
+                    try {
+
+                        Thread.sleep(1000);
+                        counter = counter + 1;
+                        System.out.println(counter + " is counter value");
+
+                    } catch (Exception e){
+
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 
@@ -196,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Walk finished!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
-
+                walkStarted = false;
             }
         });
     }
@@ -234,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(MainActivity.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
-        
+
     }
 
     @Override
