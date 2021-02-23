@@ -24,6 +24,7 @@ import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -38,129 +39,9 @@ public class MainActivity extends AppCompatActivity {
     FusedLocationProviderClient fusedLocationProviderClient;
     boolean walkStarted;
     static List<Address> addresses;
-    static List<double[]> walkData = new List<double[]>() {
-        @Override
-        public int size() {
-            return 0;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return false;
-        }
-
-        @Override
-        public boolean contains(@Nullable Object o) {
-            return false;
-        }
-
-        @NonNull
-        @Override
-        public Iterator<double[]> iterator() {
-            return null;
-        }
-
-        @NonNull
-        @Override
-        public Object[] toArray() {
-            return new Object[0];
-        }
-
-        @NonNull
-        @Override
-        public <T> T[] toArray(@NonNull T[] a) {
-            return null;
-        }
-
-        @Override
-        public boolean add(double[] doubles) {
-            return false;
-        }
-
-        @Override
-        public boolean remove(@Nullable Object o) {
-            return false;
-        }
-
-        @Override
-        public boolean containsAll(@NonNull Collection<?> c) {
-            return false;
-        }
-
-        @Override
-        public boolean addAll(@NonNull Collection<? extends double[]> c) {
-            return false;
-        }
-
-        @Override
-        public boolean addAll(int index, @NonNull Collection<? extends double[]> c) {
-            return false;
-        }
-
-        @Override
-        public boolean removeAll(@NonNull Collection<?> c) {
-            return false;
-        }
-
-        @Override
-        public boolean retainAll(@NonNull Collection<?> c) {
-            return false;
-        }
-
-        @Override
-        public void clear() {
-
-        }
-
-        @Override
-        public double[] get(int index) {
-            return new double[0];
-        }
-
-        @Override
-        public double[] set(int index, double[] element) {
-            return new double[0];
-        }
-
-        @Override
-        public void add(int index, double[] element) {
-
-        }
-
-        @Override
-        public double[] remove(int index) {
-            return new double[0];
-        }
-
-        @Override
-        public int indexOf(@Nullable Object o) {
-            return 0;
-        }
-
-        @Override
-        public int lastIndexOf(@Nullable Object o) {
-            return 0;
-        }
-
-        @NonNull
-        @Override
-        public ListIterator<double[]> listIterator() {
-            return null;
-        }
-
-        @NonNull
-        @Override
-        public ListIterator<double[]> listIterator(int index) {
-            return null;
-        }
-
-        @NonNull
-        @Override
-        public List<double[]> subList(int fromIndex, int toIndex) {
-            return null;
-        }
-    };
-    int counter = 0;
+    static double[] startPosition;
+    static double[] endPosition;
+    double[] log;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,9 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionButton startWalk = findViewById(R.id.startWalk);
         FloatingActionButton endWalk = findViewById(R.id.endWalk);
-
         System.out.println("Hello World");
-
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -184,21 +63,8 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Walk started!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
-                walkStarted = true;
-
-                while (counter < 20) {
-
-                    try {
-
-                        Thread.sleep(1000);
-                        counter = counter + 1;
-                        System.out.println(counter + " is counter value");
-
-                    } catch (Exception e){
-
-                        e.printStackTrace();
-                    }
-                }
+                getLocation();
+                startPosition = log;;
             }
         });
 
@@ -208,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Walk finished!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
-                walkStarted = false;
+                getLocation();
+                endPosition = log;
             }
         });
     }
@@ -227,14 +94,9 @@ public class MainActivity extends AppCompatActivity {
 
                             Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
                             addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                            double latitude = location.getLatitude();
-                            double longitude = location.getLongitude();
-                            double[] latLong = {latitude, longitude};
-                            Collections.addAll(walkData, latLong);
-                            System.out.println("latLong is " + latLong.toString());
-                            System.out.println(walkData.size());
+                            log = new double[]{location.getLatitude(), location.getLongitude()};
 
-                        } catch (IOException e){
+                        } catch (IOException e) {
 
                             e.printStackTrace();
                         }
@@ -246,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(MainActivity.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
-
     }
 
     @Override
