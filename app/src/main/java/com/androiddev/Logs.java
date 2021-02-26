@@ -9,21 +9,32 @@ public class Logs {
     private LocalDateTime timeStamp;
     private double latitude;
     private double longitude;
+    private String addressLine;
 
     public Logs(){
 
     }
 
-    public Logs(LocalDateTime timeStamp, double latitude, double longitude){
+    public Logs(LocalDateTime timeStamp, double latitude, double longitude, String addressLine){
 
         this.setLogID(logNum);
+        logNum = logNum + 1;
         this.setTimeStamp(timeStamp);
         this.setLatitude(latitude);
         this.setLongitude(longitude);
+        this.setAddressLine(addressLine);
     }
 
     public String toString(){
         return "ID=" + getLogID() + "DateTime= " + getTimeStamp() + "Lat=" + getLatitude() + " Long=" + getLongitude();
+    }
+
+    public String getAddressLine() {
+        return addressLine;
+    }
+
+    public void setAddressLine(String addressLine) {
+        this.addressLine = addressLine;
     }
 
     public LocalDateTime getTimeStamp() {

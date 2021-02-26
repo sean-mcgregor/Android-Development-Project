@@ -26,6 +26,7 @@ public class FirstFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_first, container, false);
         mTextView = root.findViewById(R.id.textview_first);
+        mTextView.setText("Welcome. Please begin a walk by using the button in the bottom left corner. End your walk using the button in the bottom right corner.");
 
         return root;
     }
@@ -37,8 +38,8 @@ public class FirstFragment extends Fragment {
         try{
 
             //mTextView.setText((CharSequence) MainActivity.logList);
-            System.out.println(MainActivity.logList.get(0).toString() + " was the start point of your journey.\n" +
-                    MainActivity.logList.get(MainActivity.logList.size() - 1).toString() + " was the end point of your journey.");
+            mTextView.setText(MainActivity.logList.get(0).getAddressLine() + " was the start point of your journey.\n" +
+                    MainActivity.logList.get(MainActivity.logList.size() - 1).getAddressLine() + " was the end point of your journey.");
         } catch (Exception e){
 
             e.printStackTrace();
@@ -56,8 +57,8 @@ public class FirstFragment extends Fragment {
                     /*mTextView.setText(  MainActivity.logList.get(0) + " was the start point of your journey.\n" +
                                         MainActivity.logList.get(MainActivity.logList.size() - 1) + " was the end point of your journey.");
                     */
-                    System.out.println(MainActivity.logList.get(0).toString() + " was the start point of your journey.\n" +
-                            MainActivity.logList.get(MainActivity.logList.size() - 1).toString() + " was the end point of your journey.");
+                    mTextView.setText(MainActivity.logList.get(0).getAddressLine() + " was the start point of your journey.\n" +
+                            MainActivity.logList.get(MainActivity.logList.size() - 1).getAddressLine() + " was the end point of your journey.");
                 } catch (Exception e){
 
                     e.printStackTrace();

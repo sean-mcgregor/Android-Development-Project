@@ -89,6 +89,10 @@ public class MainActivity extends AppCompatActivity {
                 getLocation();
                 endPosition = logList.get(logList.size() - 1);
                 walkStarted = false;
+                System.out.println(logList.size());
+                System.out.println(logList);
+                System.out.println(logList.size());
+
             }
         });
     }
@@ -107,8 +111,9 @@ public class MainActivity extends AppCompatActivity {
 
                             Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
                             addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                            String addressLineString = addresses.get(0).getAddressLine(0);
                             currentTime = LocalDateTime.now();
-                            Logs temporaryLog = new Logs(currentTime, location.getLatitude(), location.getLongitude());
+                            Logs temporaryLog = new Logs(currentTime, location.getLatitude(), location.getLongitude(), addressLineString);
                             logList.add(temporaryLog);
 
                         } catch (IOException e) {
