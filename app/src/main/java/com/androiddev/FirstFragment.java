@@ -1,5 +1,6 @@
 package com.androiddev;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -28,12 +30,15 @@ public class FirstFragment extends Fragment {
         return root;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         try{
 
-            mTextView.setText(Arrays.toString(MainActivity.startPosition));
+            //mTextView.setText((CharSequence) MainActivity.logList);
+            System.out.println(MainActivity.logList.get(0).toString() + " was the start point of your journey.\n" +
+                    MainActivity.logList.get(MainActivity.logList.size() - 1).toString() + " was the end point of your journey.");
         } catch (Exception e){
 
             e.printStackTrace();
@@ -48,8 +53,11 @@ public class FirstFragment extends Fragment {
 
                 try{
 
-                    mTextView.setText(  Arrays.toString(MainActivity.startPosition) + " was the start point of your journey.\n" +
-                                        Arrays.toString(MainActivity.endPosition) + " was the end point of your journey.");
+                    /*mTextView.setText(  MainActivity.logList.get(0) + " was the start point of your journey.\n" +
+                                        MainActivity.logList.get(MainActivity.logList.size() - 1) + " was the end point of your journey.");
+                    */
+                    System.out.println(MainActivity.logList.get(0).toString() + " was the start point of your journey.\n" +
+                            MainActivity.logList.get(MainActivity.logList.size() - 1).toString() + " was the end point of your journey.");
                 } catch (Exception e){
 
                     e.printStackTrace();

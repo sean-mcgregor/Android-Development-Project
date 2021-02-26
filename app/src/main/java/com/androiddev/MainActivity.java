@@ -5,8 +5,10 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 
+import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,17 +18,23 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
+import android.util.Log;
 import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -34,14 +42,17 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class MainActivity extends AppCompatActivity {
 
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+    LocalDateTime currentTime;
     FusedLocationProviderClient fusedLocationProviderClient;
     boolean walkStarted;
     static List<Address> addresses;
-    static double[] startPosition;
-    static double[] endPosition;
-    double[] log;
+    static Logs startPosition;
+    static Logs endPosition;
+    static ArrayList<Logs> logList = new ArrayList<Logs>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
 
                 getLocation();
-                startPosition = log;;
+                //startPosition = logList.get(0);
+                walkStarted = true;
             }
         });
 
@@ -75,7 +87,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
 
                 getLocation();
-                endPosition = log;
+                endPosition = logList.get(logList.size() - 1);
+                walkStarted = false;
             }
         });
     }
@@ -94,7 +107,9 @@ public class MainActivity extends AppCompatActivity {
 
                             Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
                             addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                            log = new double[]{location.getLatitude(), location.getLongitude()};
+                            currentTime = LocalDateTime.now();
+                            Logs temporaryLog = new Logs(currentTime, location.getLatitude(), location.getLongitude());
+                            logList.add(temporaryLog);
 
                         } catch (IOException e) {
 

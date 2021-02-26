@@ -1,21 +1,37 @@
 package com.androiddev;
 
+import java.time.LocalDateTime;
+
 public class Logs {
 
     static int logNum;
     private int logID;
+    private LocalDateTime timeStamp;
     private double latitude;
     private double longitude;
 
-    public Logs(double latitude, double longitude){
+    public Logs(){
+
+    }
+
+    public Logs(LocalDateTime timeStamp, double latitude, double longitude){
 
         this.setLogID(logNum);
+        this.setTimeStamp(timeStamp);
         this.setLatitude(latitude);
         this.setLongitude(longitude);
     }
 
     public String toString(){
-        return "ID=" + getLogID() + "Lat=" + getLatitude() + " Long=" + getLongitude();
+        return "ID=" + getLogID() + "DateTime= " + getTimeStamp() + "Lat=" + getLatitude() + " Long=" + getLongitude();
+    }
+
+    public LocalDateTime getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(LocalDateTime timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     public int getLogID() {
