@@ -65,16 +65,18 @@ public class SecondFragment extends Fragment {
         dates = new Date[logs.length];
         DataPoint[] dataPoints = new DataPoint[logs.length];
         for (int i = 0; i < logs.length; i++) {
-            if (logs[i].getLongitude() > graphMaxY[0]) {
-                graphMaxY[0] = logs[i].getLongitude();
+            if (logs[i].getSpeedAtPoint() > graphMaxY[0]) {
+                graphMaxY[0] = logs[i].getSpeedAtPoint();
             }
-            if (logs[i].getLongitude() < graphMinY[0]) {
-                graphMinY[0] = logs[i].getLongitude();
+            if (logs[i].getSpeedAtPoint() < graphMinY[0]) {
+                graphMinY[0] = logs[i].getSpeedAtPoint();
             }
+
             LocalDateTime time = logs[i].getTimeStamp();
             Date date = convertToDateViaInstant(time);
             dates[i] = date;
-            dataPoints[i] = new DataPoint(date, logs[i].getLongitude());
+            dataPoints[i] = new DataPoint(date, logs[i].getSpeedAtPoint());
+            System.out.println(logs[i].getSpeedAtPoint());
         }
 
         graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
@@ -103,7 +105,7 @@ public class SecondFragment extends Fragment {
         graph.getGridLabelRenderer().setPadding(40);
         GridLabelRenderer gridLabel = graph.getGridLabelRenderer();
         gridLabel.setHorizontalAxisTitle("Time");
-        gridLabel.setVerticalAxisTitle("Speed");
+        gridLabel.setVerticalAxisTitle("Speed in Metres per Minute");
         graph.setBackgroundColor(rgb(224, 255, 247));
         series.setColor(rgb(255, 0, 0));
         gridLabel.setHorizontalLabelsVisible(true);

@@ -34,6 +34,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
 import java.io.IOException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -111,11 +112,33 @@ public class MainActivity extends AppCompatActivity {
                             addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                             String addressLineString = addresses.get(0).getAddressLine(0);
                             currentTime = LocalDateTime.now();
-                            Logs temporaryLog = new Logs(currentTime, location.getLatitude(), location.getLongitude(), addressLineString);
-                            Logs[] tempArr = Arrays.copyOf(logList, logList.length + 1);
-                            System.out.println(Arrays.toString(tempArr) + " is tempArr");
-                            System.out.println(Arrays.toString(logList) + " is logList");
+                            Logs temporaryLog;
+                            double timeSince;
 
+                            try{
+
+                                timeSince = ((double)ChronoUnit.SECONDS.between(logList[logList.length - 1].getTimeStamp(), logList[logList.length - 2].getTimeStamp()) * (-1));
+                            } catch (Exception e) {
+
+                                timeSince = 1.0;
+                            }
+
+                            String timeStr = Double.toString(timeSince);
+                            System.out.println(timeStr);
+
+                            try {
+
+                                temporaryLog = new Logs(
+                                        currentTime, location.getLatitude(), location.getLongitude(), addressLineString,
+                                        HaversineDistance(logList[logList.length - 1].getLatitude(), logList[logList.length - 1].getLongitude(),
+                                        logList[logList.length - 2].getLatitude(), logList[logList.length - 2].getLongitude()),
+                                        timeSince);
+
+                            } catch (Exception e){
+
+                                temporaryLog = new Logs(currentTime, location.getLatitude(), location.getLongitude(), addressLineString);
+                            }
+                            Logs[] tempArr = Arrays.copyOf(logList, logList.length + 1);
                             tempArr[tempArr.length - 1] = temporaryLog;
                             logList = Arrays.copyOf(tempArr, tempArr.length);
 
@@ -134,9 +157,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void HaversineDistance(double lat1, double long1, double lat2, double long2) {
+    public double HaversineDistance(double lat1, double long1, double lat2, double long2) {
         // TODO Auto-generated method stub
-        final double R = 6371.0088; // Radius of the earth
+        final double R = 6371008.8; // Radius of the earth
         double latDistance = toRad(lat2-lat1);
         double longDistance = toRad(long2-long1);
         double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) +
@@ -145,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         double distance = R * c;
 
-        System.out.println("The distance between two lat and long is::" + distance);
+        return distance;
 
     }
 

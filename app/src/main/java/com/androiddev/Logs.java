@@ -10,6 +10,9 @@ public class Logs {
     private double latitude;
     private double longitude;
     private String addressLine;
+    private double kmFromLastPoint;
+    private double timeSinceLastPoint;
+    private double speedAtPoint;
 
     public Logs(){
 
@@ -23,10 +26,50 @@ public class Logs {
         this.setLatitude(latitude);
         this.setLongitude(longitude);
         this.setAddressLine(addressLine);
+        this.setKmFromLastPoint(0.0);
+        this.setTimeSinceLastPoint(0.0);
+        this.setSpeedAtPoint(0.0);
+    }
+
+    public Logs(LocalDateTime timeStamp, double latitude, double longitude, String addressLine, double kmFromLastPoint, double timeSinceLastPoint){
+
+        this.setLogID(logNum);
+        logNum = logNum + 1;
+        this.setTimeStamp(timeStamp);
+        this.setLatitude(latitude);
+        this.setLongitude(longitude);
+        this.setAddressLine(addressLine);
+        this.setKmFromLastPoint(kmFromLastPoint);
+        this.setTimeSinceLastPoint(timeSinceLastPoint);
+        this.setSpeedAtPoint(getKmFromLastPoint() / getTimeSinceLastPoint());
     }
 
     public String toString(){
         return "ID=" + getLogID() + "DateTime= " + getTimeStamp() + "Lat=" + getLatitude() + " Long=" + getLongitude();
+    }
+
+    public double getSpeedAtPoint() {
+        return speedAtPoint;
+    }
+
+    public void setSpeedAtPoint(double speedAtPoint) {
+        this.speedAtPoint = speedAtPoint;
+    }
+
+    public double getTimeSinceLastPoint() {
+        return timeSinceLastPoint;
+    }
+
+    public void setTimeSinceLastPoint(double timeSinceLastPoint) {
+        this.timeSinceLastPoint = timeSinceLastPoint;
+    }
+
+    public double getKmFromLastPoint() {
+        return kmFromLastPoint;
+    }
+
+    public void setKmFromLastPoint(double kmFromLastPoint) {
+        this.kmFromLastPoint = kmFromLastPoint;
     }
 
     public String getAddressLine() {
