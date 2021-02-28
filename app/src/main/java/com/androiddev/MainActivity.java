@@ -35,6 +35,7 @@ import java.time.LocalDateTime;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -48,11 +49,11 @@ public class MainActivity extends AppCompatActivity {
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
     LocalDateTime currentTime;
     FusedLocationProviderClient fusedLocationProviderClient;
-    boolean walkStarted;
+    static boolean walkStarted;
     static List<Address> addresses;
     static Logs startPosition;
     static Logs endPosition;
-    static ArrayList<Logs> logList = new ArrayList<Logs>();
+    static Logs[] logList = {};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,11 +88,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
 
                 getLocation();
-                endPosition = logList.get(logList.size() - 1);
+                endPosition = logList[logList.length - 1];
                 walkStarted = false;
-                System.out.println(logList.size());
-                System.out.println(logList);
-                System.out.println(logList.size());
 
             }
         });
@@ -114,7 +112,12 @@ public class MainActivity extends AppCompatActivity {
                             String addressLineString = addresses.get(0).getAddressLine(0);
                             currentTime = LocalDateTime.now();
                             Logs temporaryLog = new Logs(currentTime, location.getLatitude(), location.getLongitude(), addressLineString);
-                            logList.add(temporaryLog);
+                            Logs[] tempArr = Arrays.copyOf(logList, logList.length + 1);
+                            System.out.println(Arrays.toString(tempArr) + " is tempArr");
+                            System.out.println(Arrays.toString(logList) + " is logList");
+
+                            tempArr[tempArr.length - 1] = temporaryLog;
+                            logList = Arrays.copyOf(tempArr, tempArr.length);
 
                         } catch (IOException e) {
 
@@ -129,6 +132,27 @@ public class MainActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
     }
+
+
+    public void HaversineDistance(double lat1, double long1, double lat2, double long2) {
+        // TODO Auto-generated method stub
+        final double R = 6371.0088; // Radius of the earth
+        double latDistance = toRad(lat2-lat1);
+        double longDistance = toRad(long2-long1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                        Math.sin(longDistance / 2) * Math.sin(longDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double distance = R * c;
+
+        System.out.println("The distance between two lat and long is::" + distance);
+
+    }
+
+    private static Double toRad(Double value) {
+        return value * Math.PI / 180;
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -12,8 +12,13 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.io.IOException;
 import java.util.Arrays;
+
+import static com.androiddev.MainActivity.logList;
+import static com.androiddev.MainActivity.walkStarted;
 
 public class FirstFragment extends Fragment {
 
@@ -38,8 +43,8 @@ public class FirstFragment extends Fragment {
         try{
 
             //mTextView.setText((CharSequence) MainActivity.logList);
-            mTextView.setText(MainActivity.logList.get(0).getAddressLine() + " was the start point of your journey.\n" +
-                    MainActivity.logList.get(MainActivity.logList.size() - 1).getAddressLine() + " was the end point of your journey.");
+            mTextView.setText(MainActivity.logList[0].getAddressLine() + " was the start point of your journey.\n" +
+                    MainActivity.logList[logList.length - 1].getAddressLine() + " was the end point of your journey.");
         } catch (Exception e){
 
             e.printStackTrace();
@@ -49,19 +54,27 @@ public class FirstFragment extends Fragment {
         view.findViewById(R.id.button_first).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
 
-                try{
+                if(MainActivity.walkStarted == false){
+
+                    NavHostFragment.findNavController(FirstFragment.this)
+                            .navigate(R.id.action_FirstFragment_to_SecondFragment);
+
+                    try{
 
                     /*mTextView.setText(  MainActivity.logList.get(0) + " was the start point of your journey.\n" +
                                         MainActivity.logList.get(MainActivity.logList.size() - 1) + " was the end point of your journey.");
                     */
-                    mTextView.setText(MainActivity.logList.get(0).getAddressLine() + " was the start point of your journey.\n" +
-                            MainActivity.logList.get(MainActivity.logList.size() - 1).getAddressLine() + " was the end point of your journey.");
-                } catch (Exception e){
+                        mTextView.setText(MainActivity.logList[0].getAddressLine() + " was the start point of your journey.\n" +
+                                MainActivity.logList[logList.length - 1].getAddressLine() + " was the end point of your journey.");
+                    } catch (Exception e){
 
-                    e.printStackTrace();
+                        e.printStackTrace();
+                    }
+                } else {
+
+                    Snackbar.make(view, "Please complete the walk session before advancing to next screen.", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
             }
         });
